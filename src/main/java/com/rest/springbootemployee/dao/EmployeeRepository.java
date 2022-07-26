@@ -46,4 +46,18 @@ public class EmployeeRepository {
                 .filter(employee -> employee.getGender().equals(gender))
                 .collect(Collectors.toList());
     }
+
+    public List<Employee> findByPage(int page, int pageSize) {
+        return employeeList.stream()
+                .skip((long) (page - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+    }
+
+    public Employee insertEmployee(Employee employee) {
+        int maxId=employeeList.stream().mapToInt(Employee::getId).max().orElse(-1);
+        employee.setId(maxId+1);
+        employeeList.add(employee);
+        return employee;
+    }
 }

@@ -21,4 +21,7 @@ public class Employee {
 
     private Integer salary;
 
+    public Employee(Integer id) {
+        this.id = id;
+    }
 }

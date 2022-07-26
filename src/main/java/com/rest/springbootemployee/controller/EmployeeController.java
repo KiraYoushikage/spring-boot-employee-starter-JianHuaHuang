@@ -30,5 +30,12 @@ public class EmployeeController {
     public List<Employee> findByGender(@RequestParam(value = "gender") String gender) {
         return employeeRepository.findByGender(gender);
     }
-
+    @GetMapping(params = {"page","pageSize"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> findByPage(int page ,int pageSize){
+        return employeeRepository.findByPage(page,pageSize);
+    }
+    public Employee insertEmployee(Employee employee){
+        return employeeRepository.insertEmployee(employee);
+    }
 }
