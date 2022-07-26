@@ -43,20 +43,19 @@ public class CompanyController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Company insertEmployee(Company company){
+    public Company insertCompany(Company company){
         return companyRepository.insertCompany(company);
     }
 
     @PutMapping()
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public  Company updateEmployee(Company company){
-        return companyRepository.updateEmployee(company);
+    public  Company updateCompany(Company company){
+        return companyRepository.updateCompany(company);
     }
-//
 //    // todo 为啥这里使用put会报错
-//    @DeleteMapping(params = {"id"})
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public  Employee deleteEmployee(@RequestParam int id){
-//        return employeeRepository.deleteEmployee(id);
-//    }
+    @DeleteMapping(params = {"id"})
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public  Company deleteCompany(@RequestParam int id){
+        return companyRepository.deleteCompany(id);
+    }
 }

@@ -59,7 +59,7 @@ public class CompanyRepository {
         return company;
     }
 
-    public Company updateEmployee(Company company) {
+    public Company updateCompany(Company company) {
         Company res=null;
         for (int i = 0; i < companyList.size(); i++) {
             if (Objects.equals(company.getId(), companyList.get(i).getId())){
@@ -69,5 +69,17 @@ public class CompanyRepository {
             }
         }
         return res;
+    }
+
+    public Company deleteCompany(int id) {
+        Company company = null;
+        for (int i = 0; i < companyList.size(); i++) {
+            if (Objects.equals(id, companyList.get(i).getId())){
+                company=companyList.get(i);
+                companyList.remove(i);
+                break;
+            }
+        }
+        return company;
     }
 }
