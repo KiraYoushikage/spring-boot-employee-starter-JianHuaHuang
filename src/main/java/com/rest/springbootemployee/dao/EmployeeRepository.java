@@ -63,9 +63,24 @@ public class EmployeeRepository {
     }
 
     public Employee updateEmployee(Employee employee) {
+        Employee res=null;
         for (int i = 0; i < employeeList.size(); i++) {
             if (Objects.equals(employee.getId(), employeeList.get(i).getId())){
+                res=employeeList.get(i);
                 employeeList.set(i,employee);
+                break;
+            }
+        }
+        return res;
+    }
+
+    public Employee deleteEmployee(int id) {
+        Employee employee = null;
+        for (int i = 0; i < employeeList.size(); i++) {
+            if (Objects.equals(id, employeeList.get(i).getId())){
+                employee=employeeList.get(i);
+                employeeList.remove(i);
+                break;
             }
         }
         return employee;

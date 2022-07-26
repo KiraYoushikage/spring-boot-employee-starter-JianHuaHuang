@@ -43,9 +43,16 @@ public class EmployeeController {
     }
 
     @PutMapping()
-    @ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public  Employee updateEmployee(Employee employee){
         return employeeRepository.updateEmployee(employee);
     }
-    
+
+    // todo 为啥这里使用put会报错
+    @DeleteMapping(params = {"id"})
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public  Employee deleteEmployee(@RequestParam int id){
+        return employeeRepository.deleteEmployee(id);
+    }
+
 }
