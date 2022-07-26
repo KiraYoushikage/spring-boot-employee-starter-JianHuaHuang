@@ -41,17 +41,17 @@ public class CompanyController {
         return companyRepository.findByPage(page,pageSize);
     }
 
-//    @PostMapping()
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Employee insertEmployee(Employee employee){
-//        return employeeRepository.insertEmployee(employee);
-//    }
-//
-//    @PutMapping()
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public  Employee updateEmployee(Employee employee){
-//        return employeeRepository.updateEmployee(employee);
-//    }
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public Company insertEmployee(Company company){
+        return companyRepository.insertCompany(company);
+    }
+
+    @PutMapping()
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public  Company updateEmployee(Company company){
+        return companyRepository.updateEmployee(company);
+    }
 //
 //    // todo 为啥这里使用put会报错
 //    @DeleteMapping(params = {"id"})

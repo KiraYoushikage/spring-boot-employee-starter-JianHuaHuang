@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -49,5 +50,24 @@ public class CompanyRepository {
                 .skip((long) (page - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
+    }
+
+    public Company insertCompany(Company company) {
+        int maxId=companyList.stream().mapToInt(Company::getId).max().orElse(-1);
+        company.setId(maxId+1);
+        companyList.add(company);
+        return company;
+    }
+
+    public Company updateEmployee(Company company) {
+        Company res=null;
+        for (int i = 0; i < companyList.size(); i++) {
+            if (Objects.equals(company.getId(), companyList.get(i).getId())){
+                res=companyList.get(i);
+                companyList.set(i,company);
+                break;
+            }
+        }
+        return res;
     }
 }
