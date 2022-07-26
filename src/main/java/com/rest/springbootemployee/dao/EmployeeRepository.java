@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Repository
@@ -58,6 +59,15 @@ public class EmployeeRepository {
         int maxId=employeeList.stream().mapToInt(Employee::getId).max().orElse(-1);
         employee.setId(maxId+1);
         employeeList.add(employee);
+        return employee;
+    }
+
+    public Employee updateEmployee(Employee employee) {
+        for (int i = 0; i < employeeList.size(); i++) {
+            if (Objects.equals(employee.getId(), employeeList.get(i).getId())){
+                employeeList.set(i,employee);
+            }
+        }
         return employee;
     }
 }

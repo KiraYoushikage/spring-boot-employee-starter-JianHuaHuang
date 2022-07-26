@@ -35,7 +35,16 @@ public class EmployeeController {
     public List<Employee> findByPage(int page ,int pageSize){
         return employeeRepository.findByPage(page,pageSize);
     }
+
+    @PostMapping("insert")
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee insertEmployee(Employee employee){
         return employeeRepository.insertEmployee(employee);
+    }
+
+    @PutMapping("update")
+    @ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
+    public  Employee updateEmployee(Employee employee){
+        return employeeRepository.updateEmployee(employee);
     }
 }
