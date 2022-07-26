@@ -36,15 +36,16 @@ public class EmployeeController {
         return employeeRepository.findByPage(page,pageSize);
     }
 
-    @PostMapping("insert")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Employee insertEmployee(Employee employee){
         return employeeRepository.insertEmployee(employee);
     }
 
-    @PutMapping("update")
+    @PutMapping()
     @ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
     public  Employee updateEmployee(Employee employee){
         return employeeRepository.updateEmployee(employee);
     }
+    
 }
