@@ -3,6 +3,7 @@ package com.rest.springbootemployee.controller;
 
 import com.rest.springbootemployee.dao.CompanyRepository;
 import com.rest.springbootemployee.entity.Company;
+import com.rest.springbootemployee.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,37 @@ public class CompanyController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Company findById(@PathVariable(value = "id") int id){
-        System.out.println("来了没");
         return companyRepository.findById(id);
     }
+    @GetMapping("/{id}/employees")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> findAllEmployeesById(@PathVariable(value = "id") int id){
+        return companyRepository.findAllEmployeesById(id);
+    }
+
+
+    @GetMapping(params = {"page","pageSize"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<Company> findByPage(int page ,int pageSize){
+        return companyRepository.findByPage(page,pageSize);
+    }
+
+//    @PostMapping()
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Employee insertEmployee(Employee employee){
+//        return employeeRepository.insertEmployee(employee);
+//    }
+//
+//    @PutMapping()
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public  Employee updateEmployee(Employee employee){
+//        return employeeRepository.updateEmployee(employee);
+//    }
+//
+//    // todo 为啥这里使用put会报错
+//    @DeleteMapping(params = {"id"})
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public  Employee deleteEmployee(@RequestParam int id){
+//        return employeeRepository.deleteEmployee(id);
+//    }
 }
