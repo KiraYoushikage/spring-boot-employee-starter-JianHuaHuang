@@ -20,14 +20,14 @@ public class EmployeeController {
     public Employee findById(@PathVariable(value = "id") int id){
         return employeeRepository.findById(id);
     }
-    @GetMapping("all")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> findAll(){
         return employeeRepository.findAll();
     }
-    @GetMapping("gender")
+    @GetMapping(params = {"gender"})
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> findByGender(String gender) {
+    public List<Employee> findByGender(@RequestParam(value = "gender") String gender) {
         return employeeRepository.findByGender(gender);
     }
 
