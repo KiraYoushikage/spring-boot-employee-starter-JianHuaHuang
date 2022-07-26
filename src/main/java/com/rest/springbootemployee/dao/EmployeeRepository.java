@@ -1,6 +1,6 @@
 package com.rest.springbootemployee.dao;
 
-import com.rest.springbootemployee.Employee;
+import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exceptions.EmployeeNotFoundException;
 
 import org.springframework.stereotype.Repository;

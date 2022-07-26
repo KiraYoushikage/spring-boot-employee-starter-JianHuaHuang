@@ -1,6 +1,6 @@
 package com.rest.springbootemployee.controller;
 
-import com.rest.springbootemployee.Employee;
+import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.dao.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

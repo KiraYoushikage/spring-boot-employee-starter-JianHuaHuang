@@ -1,4 +1,4 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

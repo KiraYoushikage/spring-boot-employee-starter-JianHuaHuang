@@ -20,4 +20,13 @@ public class GlobalExceptionHandler {
         return resMap;
     }
 
+    @ResponseBody
+    @ExceptionHandler(value =CompanyNotFoundException.class)
+    public Map<String, String> myErrorHandler(CompanyNotFoundException ex) {
+        Map<String, String> resMap = new HashMap<>();
+        resMap.put("code", ex.getCode());
+        resMap.put("msg", ex.getMessage());
+        return resMap;
+    }
+
 }
