@@ -71,6 +71,7 @@ public class EmployeeService {
     public Employee deleteEmployee(int id) {
         List<Employee> employeeList=employeeRepository.getAll();
         Employee employee = null;
+        // TODO 边界值可以自己throw问题，
         for (int i = 0; i < employeeList.size(); i++) {
             if (Objects.equals(id, employeeList.get(i).getId())){
                 employee=employeeList.get(i);

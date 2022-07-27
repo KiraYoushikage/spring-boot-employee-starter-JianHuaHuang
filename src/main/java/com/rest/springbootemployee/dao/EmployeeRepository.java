@@ -36,4 +36,13 @@ public class EmployeeRepository {
     public void updateEmployeeList(List<Employee> employeeList){
         this.employeeList=employeeList;
     }
+
+    public void clearAll() {
+
+        this.employeeList=new ArrayList<>();
+    }
+
+    public void insertEmployee(Employee employee){
+        this.employeeList.add(employee);
+    }
 }

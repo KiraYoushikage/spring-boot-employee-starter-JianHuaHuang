@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
 
 
@@ -30,6 +30,7 @@ public class EmployeeController {
     public List<Employee> findByGender(@RequestParam(value = "gender") String gender) {
         return companyService.findByGender(gender);
     }
+    //TODO 类型
     @GetMapping(params = {"page","pageSize"})
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> findByPage(int page ,int pageSize){
@@ -38,19 +39,21 @@ public class EmployeeController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee insertEmployee(Employee employee){
+    public Employee insertEmployee(@RequestBody Employee employee){
         return companyService.insertEmployee(employee);
     }
 
     @PutMapping()
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public  Employee updateEmployee(Employee employee){
+    public  Employee updateEmployee(@RequestBody Employee employee){
+        // TODO 不加@RequestBody
+        System.out.println("em : "+employee);
         return companyService.updateEmployee(employee);
     }
 
-    @DeleteMapping(params = {"id"})
+    // TODO 定位，表示资源的路径
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public  Employee deleteEmployee(@RequestParam int id){
+    public  Employee deleteEmployee(@PathVariable int id){
         return companyService.deleteEmployee(id);
     }
 
