@@ -52,9 +52,8 @@ public class CompanyController {
     public  Company updateCompany(Company company){
         return companyService.updateCompany(company);
     }
-//    // todo 为啥这里使用put会报错
     @DeleteMapping(params = {"id"})
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public  Company deleteCompany(@RequestParam int id){
         return companyService.deleteCompany(id);
     }

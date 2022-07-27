@@ -48,9 +48,8 @@ public class EmployeeController {
         return companyService.updateEmployee(employee);
     }
 
-    // todo 为啥这里使用put会报错
     @DeleteMapping(params = {"id"})
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public  Employee deleteEmployee(@RequestParam int id){
         return companyService.deleteEmployee(id);
     }
