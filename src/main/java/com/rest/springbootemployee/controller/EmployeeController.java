@@ -14,46 +14,46 @@ public class EmployeeController {
 
 
     @Autowired
-    EmployeeService companyService;
+    EmployeeService employeeService;
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Employee findById(@PathVariable(value = "id") int id){
-        return companyService.findById(id);
+        return employeeService.findById(id);
     }
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> findAll(){
-        return companyService.findAll();
+        return employeeService.findAll();
     }
     @GetMapping(params = {"gender"})
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> findByGender(@RequestParam(value = "gender") String gender) {
-        return companyService.findByGender(gender);
+        return employeeService.findByGender(gender);
     }
     //TODO 类型
     @GetMapping(params = {"page","pageSize"})
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> findByPage(int page ,int pageSize){
-        return companyService.findByPage(page,pageSize);
+        return employeeService.findByPage(page,pageSize);
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Employee insertEmployee(@RequestBody Employee employee){
-        return companyService.insertEmployee(employee);
+        return employeeService.insertEmployee(employee);
     }
 
     @PutMapping("/{id}")
     public  Employee updateEmployee(@PathVariable Integer id,@RequestBody Employee employee){
         // TODO 不加@RequestBody
-        return companyService.updateEmployee(id,employee);
+        return employeeService.updateEmployee(id,employee);
     }
 
     // TODO 定位，表示资源的路径
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public  Employee deleteEmployee(@PathVariable int id){
-        return companyService.deleteEmployee(id);
+        return employeeService.deleteEmployee(id);
     }
 
 }

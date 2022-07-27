@@ -15,7 +15,6 @@ public class EmployeeRepository {
 
 
     {
-        System.out.println("_____________________来这里了没");
         employeeList = new ArrayList<Employee>() {{
             add(new Employee(1, "A", 10, "男", 100));
             add(new Employee(2, "B", 11, "女", 100));

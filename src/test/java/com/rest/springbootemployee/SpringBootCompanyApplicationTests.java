@@ -1,6 +1,6 @@
-package com.rest.springbootcompany.controllerTests;
+package com.rest.springbootemployee;
 
-import com.rest.springbootemployee.SpringBootEmployeeApplication;
+
 import com.rest.springbootemployee.dao.CompanyRepository;
 
 import com.rest.springbootemployee.entity.Company;
@@ -11,18 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
-import javax.annotation.Resource;
 
 import static org.hamcrest.Matchers.hasSize;
 
-@SpringBootTest(classes = SpringBootEmployeeApplication.class)
-@ComponentScan(basePackages = {"com.rest.*"})
+@SpringBootTest
 public class SpringBootCompanyApplicationTests {
     @Autowired
     MockMvc client;
@@ -35,7 +32,7 @@ public class SpringBootCompanyApplicationTests {
     }
 
     @Test
-    void should_get_all_employee_when_get_findAll_given_nothing() throws Exception {
+    public void should_get_all_employee_when_get_findAll_given_nothing() throws Exception {
         //given
         companyRepository.insertCompany(new Company(1, "company1", new Employee(1, "Sally", 22, "男", 10000)));
         //when

@@ -1,4 +1,4 @@
-package com.rest.springbootemployee.controllerTests;
+package com.rest.springbootemployee;
 
 import com.rest.springbootemployee.SpringBootEmployeeApplication;
 import com.rest.springbootemployee.dao.EmployeeRepository;
@@ -73,7 +73,7 @@ class SpringBootEmployeeApplicationTests {
 		//then
 		List<Employee> employeeList =employeeRepository.getAll();
 		Assertions.assertNotNull(employeeList);
-		MatcherAssert.assertThat(employeeList,hasSize(1));
+		MatcherAssert.assertThat(employeeList,hasSize(2));
 		Assertions.assertEquals(employeeList.get(0).getName(),"K");
 		Assertions.assertEquals(employeeList.get(0).getAge(),20);
 		Assertions.assertEquals(employeeList.get(0).getGender(),"男");
@@ -171,13 +171,13 @@ class SpringBootEmployeeApplicationTests {
 		}
 		String updateEmployeeJson="{\n" +
 				"    \"id\": 5,\n" +
-				"    \"name\": \"K\",\n" +
-				"    \"age\": 20,\n" +
+				"    \"name\": \"Sally5\",\n" +
+				"    \"age\": 22,\n" +
 				"    \"gender\": \"男\",\n" +
-				"    \"salary\": 1000 \n" +
+				"    \"salary\": 10000 \n" +
 				"}";
 		//when
-		client.perform(MockMvcRequestBuilders.put("/employees")
+		client.perform(MockMvcRequestBuilders.put("/employees/{id}",5)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(updateEmployeeJson)
 				).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
