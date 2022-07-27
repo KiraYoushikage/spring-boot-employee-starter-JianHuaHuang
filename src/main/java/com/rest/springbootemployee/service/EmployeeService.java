@@ -69,11 +69,10 @@ public class EmployeeService {
         if (Objects.nonNull(employee.getSalary())){
             em.setSalary(employee.getSalary());
         }
-        employeeRepository.updateEmployeeList(id,em);
-        return em;
+        return employeeRepository.updateEmployeeList(id,em);
     }
 
     public Employee deleteEmployee(int id) {
-            return employeeRepository.deleteEmployee(id);
+        return employeeRepository.deleteEmployee(id);
     }
 }

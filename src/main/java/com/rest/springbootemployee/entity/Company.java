@@ -13,4 +13,12 @@ public class Company {
     private int id;
     private String companyName;
     private List<Employee> employees;
+
+    public Company(int id, String companyName, Employee employee) {
+        this.id = id;
+        this.companyName = companyName;
+        if (this.getEmployees()!=null){
+            this.getEmployees().add(employee);
+        }
+    }
 }

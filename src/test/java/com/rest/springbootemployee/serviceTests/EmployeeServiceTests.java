@@ -11,12 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
+
 public class EmployeeServiceTests {
 
 
@@ -35,6 +37,9 @@ public class EmployeeServiceTests {
             prepareEmployeeList.add(employee);
         }
         Mockito.when(employeeRepository.getAll()).thenReturn(prepareEmployeeList);
+//        MockitoAnnotations.initMocks(this);
+//        employeeRepository.setEmployeeList(prepareEmployeeList); // 这里不会走里面的
+//        System.out.println("emeeee" + employeeRepository.employeeList);
         System.out.println("----测试开始----");
     }
     @Test
@@ -55,7 +60,6 @@ public class EmployeeServiceTests {
         Employee em=new Employee(2,"Sally"+2,22,"男",10000);
         Employee prepareEmployee=new Employee(2,"Sally"+2,20,"女",12000);
         //when
-
         Mockito.when(employeeRepository.findById(2)).thenReturn(em);
         Employee employee=employeeService.updateEmployee(2,prepareEmployee);
         //then
@@ -96,23 +100,25 @@ public class EmployeeServiceTests {
     public void should_return_delete_employee_when_deleteEmployee_given_id() {
         //given
         //given
-        Employee prepareEmployee=new Employee(2,"Sally"+2,20,"女",12000);
+        Integer id=2;
         //when
-
-        Mockito.when(employeeRepository.deleteEmployee(2)).thenReturn(prepareEmployee);
+        Employee returnEmployee=new Employee(2,"Sally"+2,22,"男",10000);
+        Mockito.when(employeeRepository.deleteEmployee(id)).thenReturn(returnEmployee);
         Employee employee=employeeService.deleteEmployee(2);
         //then
-        Assertions.assertEquals(prepareEmployee.getId(),employee.getId());
-        Assertions.assertEquals(prepareEmployee.getName(),employee.getName());
-        Assertions.assertEquals(prepareEmployee.getAge(),employee.getAge());
-        Assertions.assertEquals(prepareEmployee.getGender(),employee.getGender());
-        Assertions.assertEquals(prepareEmployee.getSalary(),employee.getSalary());
+        Assertions.assertEquals(returnEmployee.getId(),employee.getId());
+        Assertions.assertEquals(returnEmployee.getName(),employee.getName());
+        Assertions.assertEquals(returnEmployee.getAge(),employee.getAge());
+        Assertions.assertEquals(returnEmployee.getGender(),employee.getGender());
+        Assertions.assertEquals(returnEmployee.getSalary(),employee.getSalary());
 
     }
 
+
+
     @AfterEach
     void after() {
-        System.out.println("----测试结束----");
+        System.out.println("----test?----");
     }
 
 }

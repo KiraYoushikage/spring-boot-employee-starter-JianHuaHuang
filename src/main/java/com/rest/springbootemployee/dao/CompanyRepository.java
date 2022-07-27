@@ -32,4 +32,12 @@ public class CompanyRepository {
     public void updateCompanyList(List<Company> companyList) {
         this.companyList=companyList;
     }
+
+    public void clearAll() {
+        this.companyList=new ArrayList<>();
+    }
+
+    public void insertCompany(Company company) {
+        this.companyList.add(company);
+    }
 }

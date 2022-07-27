@@ -11,12 +11,11 @@ import java.util.Objects;
 @Repository
 public class EmployeeRepository {
 
-
-    private List<Employee> employeeList;
+    public List<Employee> employeeList;
 
 
     {
-        System.out.println("来这里了没");
+        System.out.println("_____________________来这里了没");
         employeeList = new ArrayList<Employee>() {{
             add(new Employee(1, "A", 10, "男", 100));
             add(new Employee(2, "B", 11, "女", 100));
@@ -36,13 +35,15 @@ public class EmployeeRepository {
         return this.employeeList;
     }
 
-    public void updateEmployeeList(Integer id,Employee employee) {
+    public Employee updateEmployeeList(Integer id,Employee employee) {
+        List<Employee> employeeList =getAll(); // 为了迎合单元测试
         for (int i = 0; i < employeeList.size(); i++) {
             if (Objects.equals(employeeList.get(i).getId(), id)){
                 employeeList.set(i,employee);
                 break;
             }
         }
+        return employee;
     }
 
     public void clearAll() {
@@ -51,12 +52,14 @@ public class EmployeeRepository {
     }
 
     public Employee insertEmployee(Employee employee) {
-        this.employeeList.add(employee);
+        List<Employee> employeeList=getAll(); // 为了迎合单元测试
+        employeeList.add(employee);
         return employee;
     }
 
     public Employee findById(Integer id) {
-        return this.employeeList.stream()
+        List<Employee> employeeList=getAll(); // 为了迎合单元测试
+        return employeeList.stream()
                 .filter(employee -> Objects.equals(employee.getId(), id))
                 .findFirst()
                 .orElseThrow(EmployeeNotFoundException::new);
@@ -64,6 +67,7 @@ public class EmployeeRepository {
     }
 
     public Employee deleteEmployee(Integer id){
+        List<Employee> employeeList=getAll();
         Employee employee=null;
         for (int i = 0; i < employeeList.size(); i++) {
             if (Objects.equals(employeeList.get(i).getId(), id)){
@@ -73,5 +77,10 @@ public class EmployeeRepository {
             }
         }
         return employee;
+    }
+
+    public void setEmployeeList(List<Employee> employeeList) {
+        System.out.println("_________________is here?");
+        this.employeeList = employeeList;
     }
 }

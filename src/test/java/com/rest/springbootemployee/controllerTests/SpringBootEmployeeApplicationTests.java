@@ -1,5 +1,6 @@
 package com.rest.springbootemployee.controllerTests;
 
+import com.rest.springbootemployee.SpringBootEmployeeApplication;
 import com.rest.springbootemployee.dao.EmployeeRepository;
 import com.rest.springbootemployee.entity.Employee;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +20,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 
-@SpringBootTest
+@SpringBootTest(classes = SpringBootEmployeeApplication.class)
 @AutoConfigureMockMvc
 class SpringBootEmployeeApplicationTests {
 	@Autowired

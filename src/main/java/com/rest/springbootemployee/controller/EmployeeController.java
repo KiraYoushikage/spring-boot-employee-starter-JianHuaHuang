@@ -37,24 +37,23 @@ public class EmployeeController {
         return companyService.findByPage(page,pageSize);
     }
 
-//    @PostMapping()
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Employee insertEmployee(@RequestBody Employee employee){
-//        return companyService.insertEmployee(employee);
-//    }
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public Employee insertEmployee(@RequestBody Employee employee){
+        return companyService.insertEmployee(employee);
+    }
 
     @PutMapping("/{id}")
     public  Employee updateEmployee(@PathVariable Integer id,@RequestBody Employee employee){
         // TODO 不加@RequestBody
-        System.out.println("em : "+employee);
         return companyService.updateEmployee(id,employee);
     }
 
     // TODO 定位，表示资源的路径
-//    @DeleteMapping("/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public  Employee deleteEmployee(@PathVariable int id){
-//        return companyService.deleteEmployee(id);
-//    }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public  Employee deleteEmployee(@PathVariable int id){
+        return companyService.deleteEmployee(id);
+    }
 
 }
