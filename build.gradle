@@ -31,6 +31,10 @@ dependencies {
 //    runtimeOnly 'mysql:mysql-connector-java:8.0.29'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //    testImplementation 'com.h2database:h2:2.1.212'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
 }
 
 group = 'com.thoughtworks'
@@ -40,7 +44,9 @@ sourceCompatibility = '1.8'
 
 test {
     useJUnitPlatform()
+    testLogging.showStandardStreams = true
 }
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
+

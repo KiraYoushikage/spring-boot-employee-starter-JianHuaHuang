@@ -4,6 +4,7 @@ import com.rest.springbootemployee.dao.EmployeeRepository;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exceptions.EmployeeNotFoundException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,36 +51,29 @@ public class EmployeeService {
         int maxId=employeeList.stream().mapToInt(Employee::getId).max().orElse(-1);
         employee.setId(maxId+1);
         employeeList.add(employee);
-        employeeRepository.updateEmployeeList(employeeList);
-        return employee;
+        return employeeRepository.insertEmployee(employee);
     }
 
-    public Employee updateEmployee(Employee employee) {
-        List<Employee> employeeList=employeeRepository.getAll();
-        Employee res=null;
-        for (int i = 0; i < employeeList.size(); i++) {
-            if (Objects.equals(employee.getId(), employeeList.get(i).getId())){
-                res=employeeList.get(i);
-                employeeList.set(i,employee);
-                break;
-            }
+    public Employee updateEmployee(Integer id, Employee employee) {
+
+        Employee em=employeeRepository.findById(employee.getId());
+        if(StringUtils.isNoneBlank(employee.getName())){
+            em.setName(employee.getName());
         }
-        employeeRepository.updateEmployeeList(employeeList);
-        return res;
+        if (StringUtils.isNoneBlank(employee.getGender())){
+            em.setGender(employee.getGender());
+        }
+        if(Objects.nonNull(employee.getAge())){
+            em.setAge(employee.getAge());
+        }
+        if (Objects.nonNull(employee.getSalary())){
+            em.setSalary(employee.getSalary());
+        }
+        employeeRepository.updateEmployeeList(id,em);
+        return em;
     }
 
     public Employee deleteEmployee(int id) {
-        List<Employee> employeeList=employeeRepository.getAll();
-        Employee employee = null;
-        // TODO 边界值可以自己throw问题，
-        for (int i = 0; i < employeeList.size(); i++) {
-            if (Objects.equals(id, employeeList.get(i).getId())){
-                employee=employeeList.get(i);
-                employeeList.remove(i);
-                break;
-            }
-        }
-        employeeRepository.updateEmployeeList(employeeList);
-        return employee;
+            return employeeRepository.deleteEmployee(id);
     }
 }

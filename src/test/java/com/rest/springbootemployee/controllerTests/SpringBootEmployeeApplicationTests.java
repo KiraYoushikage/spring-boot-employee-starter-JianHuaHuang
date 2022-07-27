@@ -1,4 +1,4 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.controllerTests;
 
 import com.rest.springbootemployee.dao.EmployeeRepository;
 import com.rest.springbootemployee.entity.Employee;
