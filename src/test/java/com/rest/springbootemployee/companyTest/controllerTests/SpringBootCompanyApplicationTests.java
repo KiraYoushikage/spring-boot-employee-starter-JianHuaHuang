@@ -1,4 +1,4 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.companyTest.controllerTests;
 
 
 import com.rest.springbootemployee.dao.CompanyRepository;
@@ -9,6 +9,7 @@ import com.rest.springbootemployee.entity.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 public class SpringBootCompanyApplicationTests {
     @Autowired
     MockMvc client;
@@ -40,13 +42,14 @@ public class SpringBootCompanyApplicationTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("company1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].name").value("Sally"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].gender").value("男"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].salary").value(10000));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees.[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees.[0].name").value("Sally"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees.[0].age").value(22))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees.[0].gender").value("男"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees.[0].salary").value(10000));
 
         //then
+
 
     }
 

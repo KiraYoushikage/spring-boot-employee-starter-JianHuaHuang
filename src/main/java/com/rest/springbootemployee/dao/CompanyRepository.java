@@ -38,6 +38,8 @@ public class CompanyRepository {
     }
 
     public void insertCompany(Company company) {
-        this.companyList.add(company);
+        List<Company> companyList=getAll();
+        if(companyList!=null)
+            companyList.add(company);
     }
 }
