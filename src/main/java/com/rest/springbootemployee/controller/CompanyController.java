@@ -43,18 +43,18 @@ public class CompanyController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Company insertCompany(Company company){
+    public Company insertCompany(@RequestBody Company company){
         return companyService.insertCompany(company);
     }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public  Company updateCompany(Company company){
-        return companyService.updateCompany(company);
+    public  Company updateCompany(@PathVariable Integer id, @RequestBody Company company){
+        return companyService.updateCompany(id,company);
     }
-    @DeleteMapping(params = {"id"})
+    @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public  Company deleteCompany(@RequestParam int id){
+    public  Company deleteCompany(@PathVariable Integer id){
         return companyService.deleteCompany(id);
     }
 }

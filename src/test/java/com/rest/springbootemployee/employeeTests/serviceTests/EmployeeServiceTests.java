@@ -40,7 +40,7 @@ public class EmployeeServiceTests {
 //        MockitoAnnotations.initMocks(this);
 //        employeeRepository.setEmployeeList(prepareEmployeeList); // 这里不会走里面的
 //        System.out.println("emeeee" + employeeRepository.employeeList);
-        System.out.println("----测试开始----");
+        System.out.println("----TestStart----");
     }
     @Test
     public void should_return_all_employee_when_findAll_given_nothing() {
@@ -68,12 +68,6 @@ public class EmployeeServiceTests {
         Assertions.assertEquals(prepareEmployee.getAge(),em.getAge());
         Assertions.assertEquals(prepareEmployee.getGender(),em.getGender());
         Assertions.assertEquals(prepareEmployee.getSalary(),em.getSalary());
-        // TODO 这里有疑问
-//        Assertions.assertEquals(prepareEmployeeList.get(2).getId(),em.getId());
-//        Assertions.assertEquals(prepareEmployeeList.get(2).getName(),em.getName());
-//        Assertions.assertEquals(prepareEmployeeList.get(2).getAge(),em.getAge());
-//        Assertions.assertEquals(prepareEmployeeList.get(2).getGender(),em.getGender());
-//        Assertions.assertEquals(prepareEmployeeList.get(2).getSalary(),em.getSalary());
 
 
     }
@@ -118,7 +112,7 @@ public class EmployeeServiceTests {
 
     @AfterEach
     void after() {
-        System.out.println("----test?----");
+        System.out.println("----TestEnd----");
     }
 
 }

@@ -53,11 +53,12 @@ public class CompanyService {
         return company;
     }
 
-    public Company updateCompany(Company company) {
+    public Company updateCompany(Integer id,Company company) {
         List<Company> companyList=companyRepository.getAll();
         Company res=null;
+        if(Objects.isNull(id))return null;
         for (int i = 0; i < companyList.size(); i++) {
-            if (Objects.equals(company.getId(), companyList.get(i).getId())){
+            if (Objects.equals(id, companyList.get(i).getId())){
                 res=companyList.get(i);
                 companyList.set(i,company);
                 break;
@@ -67,7 +68,7 @@ public class CompanyService {
         return res;
     }
 
-    public Company deleteCompany(int id) {
+    public Company deleteCompany(Integer id) {
         List<Company> companyList=companyRepository.getAll();
         Company company = null;
         for (int i = 0; i < companyList.size(); i++) {
