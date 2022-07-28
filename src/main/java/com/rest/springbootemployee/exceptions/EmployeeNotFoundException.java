@@ -6,8 +6,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class EmployeeNotFoundException extends RuntimeException{
-    String code="400";
+    String code="404";
     public EmployeeNotFoundException() {
-        super("EmployeeNotFoud");
+        super("EmployeeNotFound");
     }
 }

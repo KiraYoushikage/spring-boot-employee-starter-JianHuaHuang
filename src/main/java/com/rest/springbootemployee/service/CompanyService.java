@@ -1,14 +1,16 @@
 package com.rest.springbootemployee.service;
 
 
-import com.rest.springbootemployee.dao.CompanyRepository;
+import com.rest.springbootemployee.dao.CompanyJpaRepository;
+import com.rest.springbootemployee.dao.impl.CompanyRepository;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exceptions.CompanyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,66 +21,38 @@ public class CompanyService {
 
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    CompanyJpaRepository companyJpaRepository;
 
     public List<Company> findAll(){
-        return companyRepository.getAll();
+        return companyJpaRepository.findAll();
     }
 
     public Company findById( int id ){
-        List<Company> companyList=companyRepository.getAll();
-        return companyList.stream()
-                .filter(company -> company.getId()==id)
-                .findFirst()
-                .orElseThrow(CompanyNotFoundException::new);
+      return companyJpaRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 
     public List<Employee> findAllEmployeesById(int id) {
         return findById(id).getEmployees();
     }
 
-    public List<Company> findByPage(int page, int pageSize) {
-        List<Company> companyList=companyRepository.getAll();
-        return companyList.stream()
-                .skip((long) (page - 1) * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
+    public Page<Company> findByPage(int page, int pageSize) {
+        return companyJpaRepository.findAll(PageRequest.of(page,pageSize));
     }
 
     public Company insertCompany(Company company) {
-        List<Company> companyList=companyRepository.getAll();
-        int maxId=companyList.stream().mapToInt(Company::getId).max().orElse(-1);
-        company.setId(maxId+1);
-        companyList.add(company);
-        companyRepository.updateCompanyList(companyList);
-        return company;
+        return companyJpaRepository.save(company);
     }
 
     public Company updateCompany(Integer id,Company company) {
-        List<Company> companyList=companyRepository.getAll();
-        Company res=null;
-        if(Objects.isNull(id))return null;
-        for (int i = 0; i < companyList.size(); i++) {
-            if (Objects.equals(id, companyList.get(i).getId())){
-                res=companyList.get(i);
-                companyList.set(i,company);
-                break;
-            }
+        Company preCompany=findById(id);
+        if (company.getCompanyName()!=null){
+            preCompany.setCompanyName(company.getCompanyName());
         }
-        companyRepository.updateCompanyList(companyList);
-        return res;
+        return companyJpaRepository.save(preCompany);
     }
 
-    public Company deleteCompany(Integer id) {
-        List<Company> companyList=companyRepository.getAll();
-        Company company = null;
-        for (int i = 0; i < companyList.size(); i++) {
-            if (Objects.equals(id, companyList.get(i).getId())){
-                company=companyList.get(i);
-                companyList.remove(i);
-                break;
-            }
-        }
-        companyRepository.updateCompanyList(companyList);
-        return company;
+    public void deleteCompany(Integer id) {
+        companyJpaRepository.deleteById(id);
     }
 }
