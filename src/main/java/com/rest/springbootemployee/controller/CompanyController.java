@@ -39,13 +39,11 @@ public class CompanyController {
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
     public Company insertCompany(@RequestBody Company company){
         return companyService.insertCompany(company);
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
     public  Company updateCompany(@PathVariable Integer id, @RequestBody Company company){
         return companyService.updateCompany(id,company);
     }
