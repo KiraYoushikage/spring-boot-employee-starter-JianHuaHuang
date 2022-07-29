@@ -1,18 +1,28 @@
 package com.rest.springbootemployee.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String companyName;
+
+
+
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(name = "companyId")
+    @ToString.Exclude
     private List<Employee> employees;
 
     public Company(int id, String companyName, Employee employee) {
@@ -24,5 +34,18 @@ public class Company {
         }
         this.setEmployees(new ArrayList<>());
         this.getEmployees().add(employee);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Company company = (Company) o;
+        return id != null && Objects.equals(id, company.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -1,4 +1,4 @@
-package com.rest.springbootemployee.dao;
+package com.rest.springbootemployee.dao.impl;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
@@ -18,7 +18,7 @@ public class CompanyRepository {
         for (int i = 1, j=1 ; i <=10 ; i++) {
             Company company=new Company(i,"company"+i,new ArrayList<>());
             for(int k=0;k<5;k++,j++){
-                company.getEmployees().add(new Employee(j, "employee"+j,(int)(Math.random()*35) + 20, (j&1)==0 ? "女": "男", (int)(Math.random()*15000) + 10000));
+                company.getEmployees().add(new Employee(j, "employee"+j,(int)(Math.random()*35) + 20, (j&1)==0 ? "女": "男", (int)(Math.random()*15000) + 10000,i));
             }
             companyList.add(company);
         }
