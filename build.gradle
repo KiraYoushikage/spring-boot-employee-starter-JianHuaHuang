@@ -38,9 +38,10 @@ dependencies {
     // https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
     implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '2.1.2'
 
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.3'
 
-
-
+    implementation 'org.flywaydb:flyway-mysql'
 }
 
 group = 'com.thoughtworks'

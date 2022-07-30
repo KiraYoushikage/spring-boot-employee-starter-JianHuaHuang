@@ -1,6 +1,8 @@
 package com.rest.springbootemployee.companyTest.controllerTests;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.rest.springbootemployee.dao.CompanyJpaRepository;
 import com.rest.springbootemployee.dao.EmployeeJpaRepository;
 import com.rest.springbootemployee.dao.impl.CompanyRepository;
@@ -20,9 +22,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,6 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-
 @ActiveProfiles("test")
 public class SpringBootCompanyApplicationTests {
     @Autowired
@@ -43,35 +41,35 @@ public class SpringBootCompanyApplicationTests {
 
     @Autowired
     EmployeeJpaRepository employeeJpaRepository;
-    List<Company> prepareCompanyList = new ArrayList<>();
 
-    List<Employee> prepareEmployeeList = new ArrayList<>();
-
+    @Autowired
+    ObjectMapper objectMapper;
 
     @BeforeEach
     public void initDataBase() {
+        employeeJpaRepository.deleteAll();
+        companyJpaRepository.deleteAll();
+        List<Company> prepareCompanyList = new ArrayList<>();
+        List<Employee> prepareEmployeeList = new ArrayList<>();
         System.out.println("-------initCompanyDatabase----------");
         for (int i = 1; i <= 10; i++) {
             Company company = new Company();
-            company.setId(i);
             company.setCompanyName("company" + i);
             prepareCompanyList.add(company);
         }
         companyJpaRepository.saveAll(prepareCompanyList);
-        System.out.println(companyJpaRepository.findAll());
-
-
+        List<Company> companies=companyJpaRepository.findAll();
+        System.out.println(companies);
 
         System.out.println("-------initEmployeeDatabase----------");
-        for (int i = 1, j = 1; i <= 10; i++) {
+        for (int i = 1, j = 1; i <= companies.size(); i++) {
             for (int k = 0; k < 5; k++, j++) {
                 Employee employee = new Employee();
-                employee.setId(null);
                 employee.setName("employee" + j);
                 employee.setAge(20);
                 employee.setGender((j & 1) == 0 ? "女" : "男");
                 employee.setSalary(10000);
-                employee.setCompanyId(i);
+                employee.setCompanyId(companies.get(i-1).getId());
                 prepareEmployeeList.add(employee);
             }
         }
@@ -103,11 +101,13 @@ public class SpringBootCompanyApplicationTests {
     @Test
     void should_get_special_company_when_get_findById_given_Id() throws Exception {
         //given
+        List<Company>companyList=companyJpaRepository.findAll();
+        Company preCompany=companyList.get(0);
         //when
-        client.perform(MockMvcRequestBuilders.get("/company/{id}",1))
+        client.perform(MockMvcRequestBuilders.get("/company/{id}",preCompany.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("company1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value(preCompany.getCompanyName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(5)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].name", everyItem(matchesPattern("employee\\d+"))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].age", everyItem(is(20))))
@@ -121,8 +121,10 @@ public class SpringBootCompanyApplicationTests {
     @Test
     void should_get_special_company_when_findCompanyById_given_id() throws Exception {
         //given
+        List<Company>companyList=companyJpaRepository.findAll();
+        Company preCompany=companyList.get(0);
         //when
-        client.perform(MockMvcRequestBuilders.get("/company/{id}/employees",1)
+        client.perform(MockMvcRequestBuilders.get("/company/{id}/employees",preCompany.getId())
                 ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].name", everyItem(matchesPattern("employee\\d+"))))
@@ -130,6 +132,7 @@ public class SpringBootCompanyApplicationTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender", everyItem(matchesPattern("[男女]"))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].salary", everyItem(is(10000))));
         //then
+
     }
     @Test
     void should_get_special_page_CompanyList_when_get_findByPage_given_page_and_pageSize() throws Exception {
@@ -150,18 +153,27 @@ public class SpringBootCompanyApplicationTests {
         //then
     }
 
-        @Test
-    void should_get_special_company_when_delete_deleteCompany_given_id() throws Exception {
+    @Test
+    void should_get_Company_when_put_updateCompany_given_and_company_and_id() throws Exception {
         //given
+        List<Company>companyList=companyJpaRepository.findAll();
+        Company preCompany=companyList.get(0);
+        List<Employee>preEmployeeList =preCompany.getEmployees();
+        preEmployeeList.get(0).setName("我是啊啊啊啊啊啊啊");
+        String json=objectMapper.writeValueAsString(new Company(null,"company55555",preEmployeeList));
 
-        //TODO 随机数可以测试范围
         //when
-        client.perform(MockMvcRequestBuilders.delete("/company/{id}",1)
-                ).andExpect(MockMvcResultMatchers.status().isNoContent());
-        List<Company> companyList=companyJpaRepository.findAll();
+        client.perform(MockMvcRequestBuilders.put("/company/{id}",preCompany.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("company55555"));
         //then
-        Assertions.assertNotNull(companyList);
-        Assertions.assertEquals(9, companyList.size());
+        //貌似不会级联更新
+//        Company veriftCompany=companyJpaRepository.findById(preCompany.getId()).orElseThrow(CompanyNotFoundException::new);
+//        Assertions.assertEquals("我是啊啊啊啊啊啊啊",veriftCompany.getEmployees().get(0).getName());
+
     }
 
 
@@ -182,25 +194,19 @@ public class SpringBootCompanyApplicationTests {
 
     }
 
-
-
-
     @Test
-    void should_get_Company_when_put_updateCompany_given_and_company_and_id() throws Exception {
+    void should_get_special_company_when_delete_deleteCompany_given_id() throws Exception {
         //given
-        String json="{\n" +
-                "    \"id\": 5,\n" +
-                "    \"companyName\": \"company55555\"\n" +
-                "}";
-        //when
-        client.perform(MockMvcRequestBuilders.put("/company/{id}",5)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("company55555"));
-        //then
-    }
+        List<Company>companyList=companyJpaRepository.findAll();
+        Company preCompany=companyList.get(0);
 
+        //when
+        client.perform(MockMvcRequestBuilders.delete("/company/{id}",preCompany.getId())
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+        List<Company> companies=companyJpaRepository.findAll();
+        //then
+        Assertions.assertNotNull(companyList);
+        Assertions.assertEquals(companyList.size()-1, companies.size());
+    }
 
 }

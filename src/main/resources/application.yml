@@ -12,11 +12,13 @@ spring:
     password: ENC(k3cG4gv3SIMtTRa3NQJcwwdRZLoc0P9b)
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none #改成none ， 由 flyway来管理
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
+  flyway:
+    baseline-on-migrate: true
 
 # 加密所需的密钥 但是这个加密的密钥我是放在VM Option上面的
 #jasypt:

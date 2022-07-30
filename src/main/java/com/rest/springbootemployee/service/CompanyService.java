@@ -12,8 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -53,6 +52,7 @@ public class CompanyService {
     }
 
     public void deleteCompany(Integer id) {
+        if(!companyJpaRepository.existsById(id)) throw new CompanyNotFoundException();
         companyJpaRepository.deleteById(id);
     }
 }

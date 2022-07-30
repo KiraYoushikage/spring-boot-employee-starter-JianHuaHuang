@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -65,8 +64,8 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Integer id) {
-        boolean exists=employeeJpaRepository.existsById(id);
-        if(!exists) throw new EmployeeNotFoundException();
+
+        if(!employeeJpaRepository.existsById(id)) throw new EmployeeNotFoundException();
         employeeJpaRepository.deleteById(id);
     }
 }

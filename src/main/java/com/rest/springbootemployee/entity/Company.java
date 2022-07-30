@@ -19,7 +19,8 @@ public class Company {
     private String companyName;
 
 
-    @OneToMany
+
+    @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name = "companyId")
     @ToString.Exclude
     private List<Employee> employees;

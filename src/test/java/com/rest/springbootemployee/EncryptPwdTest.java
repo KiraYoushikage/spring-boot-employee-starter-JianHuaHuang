@@ -22,5 +22,6 @@ public class EncryptPwdTest {
         System.out.println(url);
         System.out.println(name);
         System.out.println(password);
+        System.out.println("解码:"+encryptor.decrypt("k3cG4gv3SIMtTRa3NQJcwwdRZLoc0P9b"));
     }
 }
