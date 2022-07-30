@@ -2,36 +2,38 @@ package com.rest.springbootemployee.companyTest.controllerTests;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.rest.springbootemployee.SpringBootEmployeeApplication;
 import com.rest.springbootemployee.dao.CompanyJpaRepository;
 import com.rest.springbootemployee.dao.EmployeeJpaRepository;
 import com.rest.springbootemployee.dao.impl.CompanyRepository;
-
+import com.rest.springbootemployee.dto.CompanyResponse;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.rest.springbootemployee.exceptions.CompanyNotFoundException;
+import com.rest.springbootemployee.exceptions.EmployeeNotFoundException;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest
+@SpringBootTest(classes= SpringBootEmployeeApplication.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class SpringBootCompanyApplicationTests {
     @Autowired
+    @Resource
     MockMvc client;
     @Autowired
     CompanyRepository companyRepository;
@@ -43,6 +45,7 @@ public class SpringBootCompanyApplicationTests {
     EmployeeJpaRepository employeeJpaRepository;
 
     @Autowired
+    @Resource
     ObjectMapper objectMapper;
 
     @BeforeEach
@@ -85,19 +88,17 @@ public class SpringBootCompanyApplicationTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(10)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].id", everyItem(isA(Integer.class))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].companyName", everyItem(matchesPattern("company\\d+"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employees", hasSize(10)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employees[*]", hasSize(50)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employees[*].name", everyItem(matchesPattern("employee\\d+"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employees[*].age", everyItem(is(20))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employees[*].gender", everyItem(matchesPattern("[男女]"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employees[*].salary", everyItem(is(10000))));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employeeResponses", hasSize(10)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employeeResponses[*]", hasSize(50)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employeeResponses[*].name", everyItem(matchesPattern("employee\\d+"))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employeeResponses[*].age", everyItem(is(20))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employeeResponses[*].gender", everyItem(matchesPattern("[男女]"))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].employeeResponses[*].salary", everyItem(is(10000))));
 
         //then
 
 
     }
-
-
     @Test
     void should_get_special_company_when_get_findById_given_Id() throws Exception {
         //given
@@ -106,18 +107,15 @@ public class SpringBootCompanyApplicationTests {
         //when
         client.perform(MockMvcRequestBuilders.get("/company/{id}",preCompany.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value(preCompany.getCompanyName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(5)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].name", everyItem(matchesPattern("employee\\d+"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].age", everyItem(is(20))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].gender", everyItem(matchesPattern("[男女]"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].salary", everyItem(is(10000))));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeResponses", hasSize(5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeResponses[*].name", everyItem(matchesPattern("employee\\d+"))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeResponses[*].age", everyItem(is(20))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeResponses[*].gender", everyItem(matchesPattern("[男女]"))));
 
         //then
 
     }
-
     @Test
     void should_get_special_company_when_findCompanyById_given_id() throws Exception {
         //given
@@ -126,11 +124,9 @@ public class SpringBootCompanyApplicationTests {
         //when
         client.perform(MockMvcRequestBuilders.get("/company/{id}/employees",preCompany.getId())
                 ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].name", everyItem(matchesPattern("employee\\d+"))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].age", everyItem(is(20))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender", everyItem(matchesPattern("[男女]"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].salary", everyItem(is(10000))));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender", everyItem(matchesPattern("[男女]"))));
         //then
 
     }
@@ -143,13 +139,11 @@ public class SpringBootCompanyApplicationTests {
                         .param("pageSize","5")
                 ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content", hasSize(5)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].id",everyItem(isA(Integer.class))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].companyName", everyItem(matchesPattern("company\\d+"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employees[*].id",everyItem(isA(Integer.class))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employees[*].name", everyItem(matchesPattern("employee\\d+"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employees[*].age", everyItem(is(20))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employees[*].gender", everyItem(matchesPattern("[男女]"))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employees[*].salary", everyItem(is(10000))));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employeeResponses[*].name", everyItem(matchesPattern("employee\\d+"))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employeeResponses[*].age", everyItem(is(20))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employeeResponses[*].gender", everyItem(matchesPattern("[男女]"))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].employeeResponses[*].salary", everyItem(is(10000))));
         //then
     }
 
@@ -166,30 +160,23 @@ public class SpringBootCompanyApplicationTests {
         client.perform(MockMvcRequestBuilders.put("/company/{id}",preCompany.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
-                ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("company55555"));
+                ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
         //then
         //貌似不会级联更新
-//        Company veriftCompany=companyJpaRepository.findById(preCompany.getId()).orElseThrow(CompanyNotFoundException::new);
-//        Assertions.assertEquals("我是啊啊啊啊啊啊啊",veriftCompany.getEmployees().get(0).getName());
+        Company veriftCompany=companyJpaRepository.findById(preCompany.getId()).orElseThrow(CompanyNotFoundException::new);
+        Assertions.assertEquals("company55555",veriftCompany.getCompanyName());
 
     }
-
 
     @Test
     void should_get_new_company_when_post_insertCompany_given_a_new_company() throws Exception {
         //given
-        String json="{\n" +
-                "    \"id\": 11,\n" +
-                "    \"companyName\": \"company555555\"\n" +
-                "}";
+        String json=objectMapper.writeValueAsString(new Company(null,"company55555",null));
         //when
         client.perform(MockMvcRequestBuilders.post("/company")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("company555555"));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("company55555"));
         //then
 
     }
@@ -208,5 +195,16 @@ public class SpringBootCompanyApplicationTests {
         Assertions.assertNotNull(companyList);
         Assertions.assertEquals(companyList.size()-1, companies.size());
     }
-
+    @Test
+    public void should_return_company_not_found_when_findById_given_not_exists_id() throws Exception {
+        //given
+        List<Company> preCompanyList=companyJpaRepository.findAll();
+        Company company=preCompanyList.stream().max(Comparator.comparingInt(Company::getId)).orElseThrow(EmployeeNotFoundException::new);
+        //when
+        client.perform(MockMvcRequestBuilders.get("/company/{id}", company.getId()+1))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("CompanyNotFoundException"));
+        //then
+    }
 }

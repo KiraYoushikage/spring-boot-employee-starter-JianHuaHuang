@@ -10,9 +10,7 @@ import com.rest.springbootemployee.dto.mapper.EmployeeMapper;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exceptions.EmployeeNotFoundException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -31,10 +30,11 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(classes = SpringBootEmployeeApplication.class)
 @AutoConfigureMockMvc
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("test")
 class SpringBootEmployeeApplicationTests {
     @Autowired
+    @Resource
     MockMvc client;
 
     @Autowired
@@ -47,6 +47,7 @@ class SpringBootEmployeeApplicationTests {
     CompanyJpaRepository companyJpaRepository;
 
     @Autowired
+    @Resource
     ObjectMapper objectMapper;
 
     @Autowired
@@ -83,7 +84,7 @@ class SpringBootEmployeeApplicationTests {
         System.out.println(employeeJpaRepository.findAll());
     }
 
-
+    @Order(1)
     @Test
     void should_get_all_employee_when_get_findAll_given_nothing() throws Exception {
         //given
@@ -98,7 +99,7 @@ class SpringBootEmployeeApplicationTests {
 
     }
 
-
+    @Order(2)
     @Test
     void should_get_special_employee_when_get_findById_given_Id() throws Exception {
         //given
@@ -113,7 +114,7 @@ class SpringBootEmployeeApplicationTests {
 
     }
 
-
+    @Order(3)
     @Test
     void should_get_special_gender_employee_when_get_findByGender_given_gender() throws Exception {
         //given
@@ -128,7 +129,7 @@ class SpringBootEmployeeApplicationTests {
 
     }
 
-
+    @Order(4)
 
 
 
